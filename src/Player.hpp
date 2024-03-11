@@ -13,12 +13,11 @@
 class Monster;
 class Item;
 
-class Player final {
-	int healthMax{ 40 };
-	int healthCur{ 40 };
-	int armour{ 0 };
-	int damage{ 0 };
-	int posX{}, posY{};
+class Player final
+	: public Mixin_CombatTurns
+	, public Mixin_CombatStats
+	, public Mixin_PositionData
+{
 	Well512 rnd;
 
 	const std::wstring name{ L"Hero"sv };
@@ -36,21 +35,10 @@ public:
 	void takeItem(const std::size_t, objVector<Item>&, const bool);
 	bool canEquip(const Item&);
 
-	int getHealthMax() const { return healthMax; }
-	int getHealthCur() const { return healthCur; }
-	int getArmour() const { return armour; }
-	int getDamage() const { return damage; }
-	int getPosX() const { return posX; }
-	int getPosY() const { return posY; }
-
 	void introduction() const;
 	void defeated() const;
 
-
-
-	void setPosition(const int Y, const int X);
-
 	void beDamaged(int);
 	void attack(Monster&);
-	Player();
+	Player(const int = 0, const int = 0);
 };

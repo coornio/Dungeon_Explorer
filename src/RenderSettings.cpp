@@ -9,16 +9,6 @@
 #include "Includes.hpp"
 #include "Dungeon.hpp"
 
-enum Colors : u32 {
-	C_DARK  = 0xFF000000,
-	C_PATH  = 0xFF1C1C1C,
-	C_WALL  = 0xFF707070,
-	C_HERO  = 0xFF30A0D0,
-	C_ENEMY = 0xFFD01810,
-	C_CHEST = 0xFFF0D818,
-	C_HPOT  = 0xFF98E080,
-};
-
 RenderSettings::RenderSettings()
 	: window_W(800)
 	, window_H(800)
@@ -80,7 +70,7 @@ void RenderSettings::unlockTexture() {
 	SDL_UnlockTexture(texture);
 }
 
-void RenderSettings::present() {
+void RenderSettings::renderPresent() {
 	++frames;
 	SDL_RenderClear(renderer);
 	SDL_RenderCopy(renderer, texture, nullptr, nullptr);
@@ -111,6 +101,16 @@ void RenderSettings::flushDisplay(Dungeon& dungeon, const int curY, const int cu
 		return result;
 	} };
 
+	enum Colors : u32 {
+		C_DARK  = 0xFF000000,
+		C_PATH  = 0xFF1C1C1C,
+		C_WALL  = 0xFF707070,
+		C_HERO  = 0xFF30A0D0,
+		C_ENEMY = 0xFFD01810,
+		C_CHEST = 0xFFF0D818,
+		C_HPOT  = 0xFF98E080,
+	};
+
 	lockTexture();
 
 	for (auto Y{ 0 }; Y < DUNGEON_H; ++Y) {
@@ -132,23 +132,23 @@ void RenderSettings::flushDisplay(Dungeon& dungeon, const int curY, const int cu
 			const auto sine{ std::sin(near * M_PI / 2.0) };
 
 			switch (dungeon.map[Y][X]) {
-				case TileID::PATH:
+				case Dungeon::TileID::PATH:
 					*pixels++ = additive(Colors::C_PATH, sine);
 					break;
-				case TileID::WALL:
+				case Dungeon::TileID::WALL:
 					*pixels++ = additive(Colors::C_WALL, sine);
 					break;
-				case TileID::HERO:
+				case Dungeon::TileID::HERO:
 					*pixels++ = additive(Colors::C_HERO, sine);
 					break;
-				case TileID::ENEMY:
-				case TileID::BOSS:
+				case Dungeon::TileID::ENEMY:
+				case Dungeon::TileID::BOSS:
 					*pixels++ = additive(Colors::C_ENEMY, sine);
 					break;
-				case TileID::CHEST:
+				case Dungeon::TileID::CHEST:
 					*pixels++ = additive(Colors::C_CHEST, sine);
 					break;
-				case TileID::HPOT:
+				case Dungeon::TileID::HPOT:
 					*pixels++ = additive(Colors::C_HPOT, sine);
 					break;
 			}
@@ -157,6 +157,6 @@ void RenderSettings::flushDisplay(Dungeon& dungeon, const int curY, const int cu
 
 	pixels -= DUNGEON_SIZE;
 	unlockTexture();
-	present();
+	renderPresent();
 }
 

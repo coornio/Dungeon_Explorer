@@ -91,7 +91,7 @@ restart:
 				if (kb.isPressed(KEY(D))) dungeon.updatePlayerPos( 0,  1);
 			}
 
-			skip:
+			//skip:
 			kb.updateCopy();
 			Render.flushDisplay(
 				dungeon,

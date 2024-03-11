@@ -11,20 +11,17 @@
 
 class Player;
 
-class Enemy {
+class Enemy
+	: public Mixin_CombatTurns
+	, public Mixin_CombatStats
+	, public Mixin_PositionData
+{
 public:
-	int getHealthMax() const { return healthMax; }
-	int getHealthCur() const { return healthCur; }
 	int getDormancy() const { return dormant; }
-	int getArmour() const { return armour; }
-	int getDamage() const { return damage; }
-	int getPosX() const { return posX; }
-	int getPosY() const { return posY; }
 	
 	void attack(Player&);
 	Enemy(const int Y, const int X, const bool boss)
-		: posY(Y)
-		, posX(X)
+		: Mixin_PositionData(Y, X)
 		, dormant(boss)
 	{}
 
@@ -33,11 +30,6 @@ public:
 	virtual ~Enemy() {};
 
 protected:
-	int healthMax{};
-	int healthCur{};
-	int armour{};
-	int damage{};
-	int posX{}, posY{};
 	const bool dormant;
 	Well512 rnd;
 };

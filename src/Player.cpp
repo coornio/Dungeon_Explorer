@@ -38,9 +38,9 @@ void Player::takeItem(
 
 bool Player::canEquip(const Item& item) {
 	switch (item.getID()) {
-		case ItemID::ARMOUR: return setArmour(item.getPower());
-		case ItemID::WEAPON: return setDamage(item.getPower());
-		case ItemID::POTION: return true;
+		case Item::ID::ARMOUR: return setArmour(item.getPower());
+		case Item::ID::WEAPON: return setDamage(item.getPower());
+		case Item::ID::POTION: return true;
 		default: return false;
 	}
 }
@@ -61,12 +61,10 @@ bool Player::setDamage(const int power) {
 	return false;
 }
 
-void Player::setPosition(const int Y, const int X) {
-	posY = Y;
-	posX = X; 
-}
-
-Player::Player() {
+Player::Player(const int Y, const int X)
+	: Mixin_CombatStats(40, 40)
+	, Mixin_PositionData(Y, X)
+{
 	introduction();
 
 	equipDirectGear(

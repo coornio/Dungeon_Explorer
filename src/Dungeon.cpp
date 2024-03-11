@@ -128,9 +128,10 @@ bool Dungeon::readMapFile() {
 				continue;
 			}
 
-			map[Y][X] = as<u8>(ch);
+			auto tile{ as<TileID>(ch) };
+			map[Y][X] = tile;
 
-			switch (ch) {
+			switch (tile) {
 				case TileID::HERO:
 					hero.setPosition(Y, X);
 					break;

@@ -12,24 +12,6 @@ constexpr std::size_t DUNGEON_W{ 40 };
 constexpr std::size_t DUNGEON_H{ 40 };
 constexpr std::size_t DUNGEON_SIZE{ DUNGEON_W * DUNGEON_H };
 
-enum TileID : u32 {
-	PATH  = ' ',
-	WALL  = '#',
-	HERO  = 'P',
-	BOSS  = 'B',
-	ENEMY = 'E',
-	CHEST = 'C',
-	HPOT  = 'H',
-};
-
-/*
-
-
-
-*/
-
-
-
 class Item;
 class Enemy;
 class Player;
@@ -40,7 +22,17 @@ class Player;
 
 class Dungeon final {
 public:
-	arr2D<u8, DUNGEON_W, DUNGEON_H> map{};
+	enum class TileID : u8 {
+		PATH  = ' ',
+		WALL  = '#',
+		HERO  = 'P',
+		BOSS  = 'B',
+		ENEMY = 'E',
+		CHEST = 'C',
+		HPOT  = 'H',
+	};
+
+	arr2D<TileID, DUNGEON_W, DUNGEON_H> map{};
 	objVector<Enemy> monsters{};
 	objVector<Item>  treasure{};
 	objVector<Item>  healpots{};

@@ -40,7 +40,7 @@ struct RenderSettings final {
 
 	void lockTexture();
 	void unlockTexture();
-	void present();
+	void renderPresent();
 	void quit();
 
 	void flushDisplay(Dungeon&, const int, const int);
