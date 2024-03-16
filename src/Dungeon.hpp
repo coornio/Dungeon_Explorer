@@ -12,16 +12,11 @@ constexpr std::size_t DUNGEON_W{ 40 };
 constexpr std::size_t DUNGEON_H{ 40 };
 constexpr std::size_t DUNGEON_SIZE{ DUNGEON_W * DUNGEON_H };
 
-class Item;
-class Enemy;
-class Player;
-
 #include "Item.hpp"
 #include "Monster.hpp"
 #include "Player.hpp"
 
-class Dungeon final {
-public:
+namespace Map {
 	enum class TileID : u8 {
 		PATH  = ' ',
 		WALL  = '#',
@@ -31,8 +26,21 @@ public:
 		CHEST = 'C',
 		HPOT  = 'H',
 	};
+}
 
-	arr2D<TileID, DUNGEON_W, DUNGEON_H> map{};
+class DungeonMap {
+	std::wstring filepath{};
+
+public:
+	DungeonMap(std::wstring file) : filepath(file) {}
+	bool verifyMap();
+};
+
+
+
+class Dungeon final : protected BasicRenderer {
+public:
+	arr2D<Map::TileID, DUNGEON_W, DUNGEON_H> map{};
 	objVector<Enemy> monsters{};
 	objVector<Item>  treasure{};
 	objVector<Item>  healpots{};
@@ -53,5 +61,6 @@ public:
 	Dungeon();
 	void defineTreasurePool();
 	void updatePlayerPos(const int Y, const int X);
-	bool readMapFile();
+	bool readMap();
+	void flushDisplay();
 };

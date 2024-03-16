@@ -34,15 +34,17 @@
 	Το παιχνίδι τελειώνει με την ήττα του Boss.
 */
 
-int SDL_main(int, char**) {
+int SDL_main(int argc, wchar_t* argv[]) {
 
 	std::cout << "\33[?25l"; // hide caret line
 	std::setlocale(LC_ALL, "");
 
+	DungeonMap verify(argc > 1 ? std::wstring(argv[1]) : L""s);
+
 	static bool newgame{};
 	static bool waitkey{};
 	SDL_Event      event;
-	RenderSettings Render;
+	BasicRenderer Render;
 	FrameLimiter   Delay(10.0 / 3.0, false);
 	using namespace bic;
 
@@ -54,7 +56,7 @@ restart:
 	kb.updateCopy();
 	do {
 		Dungeon dungeon;
-		if (!dungeon.readMapFile())
+		if (!dungeon.readMap())
 			goto exit;
 
 		while (true) {
@@ -93,11 +95,7 @@ restart:
 
 			//skip:
 			kb.updateCopy();
-			Render.flushDisplay(
-				dungeon,
-				dungeon.hero.getPosY(),
-				dungeon.hero.getPosX()
-			);
+			dungeon.flushDisplay();
 		}
 	} while (false);
 
@@ -107,6 +105,6 @@ exit:
 		goto restart;
 	}
 
-	Render.quit();
+	Render.quitSDL();
 	return 0;
 }
